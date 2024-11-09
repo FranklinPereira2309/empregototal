@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer');
 const { MailtrapTransport } = require("mailtrap");
-import 'dotenv/config'
+require('dotenv').config();
 
 
 const transport = nodemailer.createTransport(
