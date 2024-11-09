@@ -1,0 +1,39 @@
+{
+  "name": "desafio-backend-03-dindin-t05",
+  "version": "1.0.0",
+  "description": "Desafio Módulo 3 - Componenetes: Franklin Menezes e Adriano Neto",
+  "main": "index.js",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "cors": "^2.8.5",
+    "cpf-cnpj-validator": "^1.0.3",
+    "date-fns": "^2.28.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.17.3",
+    "jsonwebtoken": "^8.5.1",
+    "mailtrap": "^3.4.0",
+    "nodemailer": "^6.9.16",
+    "pg": "^8.7.3",
+    "yup": "^0.32.11",
+    "yup-locales": "^1.2.4"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon ./src/index.js",
+    "start": "node ./src/index.js,",
+    "vercel-build": "npx prisma migrate deploy"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FranklinPereira2309/desafio-backend-03-dindin-t05.git"
+  },
+  "author": "Franklin Menezes e Adriano Neto",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FranklinPereira2309/desafio-backend-03-dindin-t05/issues"
+  },
+  "homepage": "https://github.com/FranklinPereira2309/desafio-backend-03-dindin-t05#readme"
+}
