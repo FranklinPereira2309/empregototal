@@ -24,6 +24,9 @@ const pool = new Pool({
     database,
     password,
     port,
+    ssl:{
+        rejectUnauthorized: false
+    }
 
 });
 

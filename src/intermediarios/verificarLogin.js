@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const segredo = require('../segredo');
+require('dotenv').config();
 const conexao = require('../bancoDeDados/conexao');
 
 const verificarLogin = async (req, res, next) => {
@@ -13,7 +13,7 @@ const verificarLogin = async (req, res, next) => {
     try {
         const token = authorization.replace('Bearer ', '').trim();
         
-        const { id } = jwt.verify(token, segredo);
+        const { id } = jwt.verify(token, process.env.JWT_SECRET);
 
         const { rows, rowCount } = await conexao.query('select * from usuarios where id = $1', [id]);
 
@@ -47,7 +47,7 @@ const verificarLoginEmpresa = async (req, res, next) => {
     try {
         const token = authorization.replace('Bearer ', '').trim();
         
-        const { id } = jwt.verify(token, segredo);
+        const { id } = jwt.verify(token, process.env.JWT_SECRET);
 
         const { rows, rowCount } = await conexao.query('select * from empresas where id = $1', [id]);
 

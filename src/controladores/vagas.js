@@ -482,7 +482,7 @@ const excluirVagas = async (req, res) => {
 
 
         gerarMensagens(data);
-        console.log(data);
+        
         
         return res.status(201).json({});
 
