@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Desafio Módulo 3 - Componenetes: Franklin Menezes e Adriano Neto",
   "main": "index.js",
+  "engines": {
+    "node":"20.x"
+  },
   "dependencies": {
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",

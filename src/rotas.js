@@ -7,7 +7,7 @@ const { verificarLogin, verificarLoginEmpresa } = require('./intermediarios/veri
 const usuarios_completo = require('./controladores/usuarios_completo');
 const curriculo = require('./controladores/curriculo');
 const vagas = require('./controladores/vagas');
-
+const home = require('./controladores/home');
 
 
 const rotas = express();
@@ -16,7 +16,7 @@ rotas.post('/usuario', usuarios.cadastrarLogin); // Cadastrar Usuario
 rotas.post('/empresa', empresa.cadastrarLoginEmpresa); //Cadastrar Empresa
 rotas.post('/login', loginUsuario.loginUsuario); //Logar com o Usuários
 rotas.post('/loginEmpresa', loginEmpresa.loginEmpresa); //Logar com a Empresa
-
+rotas.get('/home', home);
 
 
 rotas.get('/usuario', verificarLogin, usuarios.consultarLogin);
