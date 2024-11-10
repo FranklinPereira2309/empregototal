@@ -1,7 +1,6 @@
 const conexao = require('../bancoDeDados/conexao');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const segredo = require('../segredo');
 const yup = require('yup');
 const { setLocale } = require('yup')
 const { pt } = require('yup-locales');

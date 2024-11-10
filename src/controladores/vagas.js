@@ -1,4 +1,3 @@
-
 const conexao = require('../bancoDeDados/conexao');
 const bcrypt = require('bcrypt');
 const yup = require('yup');
