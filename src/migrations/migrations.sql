@@ -15,6 +15,7 @@ CREATE TABLE usuarios(
     senha TEXT NOT NULL 
 );
 
+
 CREATE TABLE empresas(
     id SERIAL PRIMARY KEY,
     nome TEXT NOT NULL,
