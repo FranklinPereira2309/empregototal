@@ -31,7 +31,7 @@ const cadastrarCurriculo = async (req, res) => {
         const schema = yup.object().shape({
             nome: yup.string().required('Nome completo é obrigatório.'),
             email: yup.string().email().required('Email é obrigatório.'),
-            telefone: yup.string().matches(/^\d{10,15}$/, 'Telefone deve ter entre 10 e 15 dígitos.'),
+            telefone: yup.string().required('Telefone é obrigatório.'),
             endereco: yup.string().required('Logradouro é obrigatório.'),                       
             formacao: yup.string().required('Formação é obrigatório.').max(1024),
             objetivo: yup.string().required('Objetivo é obrigatório.').max(1024),
