@@ -5,6 +5,7 @@ const yup = require('yup');
 const { setLocale } = require('yup')
 const { pt } = require('yup-locales');
 const {cpf: cpfUsuario} = require('cpf-cnpj-validator');
+require('dotenv').config();
 
 const loginUsuario = async (req, res) => {
     const { email, cpf, senha } = req.body;
@@ -69,7 +70,7 @@ const loginUsuario = async (req, res) => {
         if (!senhaVerificada) {
             return res.status(404).json({ mensagem: 'Dados NÃO conferem, verifique os Dados Digitados!'});
         }
-        const token = jwt.sign({ id: usuarioEncontrado.id }, segredo, { expiresIn: '1d' });
+        const token = jwt.sign({ id: usuarioEncontrado.id }, process.env.JWT_SECRET, { expiresIn: '1d' });
 
         const { senha: senhaUsuario, ...usuario } = usuarioEncontrado
 
