@@ -1,13 +1,12 @@
 {
-  "name": "desafio-backend-03-dindin-t05",
+  "name": "Api Emprego Total 2024 Senai",
   "version": "1.0.0",
-  "description": "Desafio Módulo 3 - Componenetes: Franklin Menezes e Adriano Neto",
+  "description": "Franklin Menezes Pereira",
   "main": "index.js",
   "engines": {
     "node": "20.x"
   },
   "dependencies": {
-    "@vercel/postgres": "^0.10.0",
     "babel": "^6.23.0",
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
@@ -27,9 +26,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon  /src/index.js",
-    "start": "node /src/index.js,"
-    
+    "dev": "nodemon /src/index.js",
+    "start": "node /src/index.js"
   },
   "repository": {
     "type": "git",
