@@ -251,9 +251,9 @@ const consultarCurriculoTipo = async (req, res) => {
 
         const { rows, rowCount } = await conexao.query(dadosUsuario, [usuario.id]);
 
-        if (rowCount === 0) {
-            return res.status(404).json({ mensagem: 'Não há Curriculos cadastrados!' });
-        }
+        // if (rowCount === 0) {
+        //     return res.status(404).json({ mensagem: 'Não há Curriculos cadastrados!' });
+        // }
 
         const tipoCurriculo = {
             medio:'medio',
