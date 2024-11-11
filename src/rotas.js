@@ -7,6 +7,7 @@ const { verificarLogin, verificarLoginEmpresa } = require('./intermediarios/veri
 const usuarios_completo = require('./controladores/usuarios_completo');
 const curriculo = require('./controladores/curriculo');
 const vagas = require('./controladores/vagas');
+const viaCepApi = require('./controladores/apiViaCep');
 
 
 
@@ -51,6 +52,8 @@ rotas.get('/todas_as_vagas_logado', verificarLogin, vagas.consultarTodasVagasLog
 rotas.get('/vagas_usuarios_curriculos', verificarLoginEmpresa, vagas.consultarUsuariosCurriculos);
 rotas.put('/vagas/:id', verificarLoginEmpresa, vagas.atualizarVagas);
 rotas.delete('/vagas/:id', verificarLoginEmpresa, vagas.excluirVagas);
+
+rotas.post('/via_cep_api', viaCepApi);
 
 
 
