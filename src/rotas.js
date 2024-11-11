@@ -53,7 +53,7 @@ rotas.get('/vagas_usuarios_curriculos', verificarLoginEmpresa, vagas.consultarUs
 rotas.put('/vagas/:id', verificarLoginEmpresa, vagas.atualizarVagas);
 rotas.delete('/vagas/:id', verificarLoginEmpresa, vagas.excluirVagas);
 
-rotas.post('/via_cep_api', viaCepApi);
+rotas.get('/via_cep_api/:cep', viaCepApi);
 
 
 
