@@ -251,9 +251,9 @@ const consultarTodasVagasLogado = async (req, res) => {
 
         const { rows, rowCount } = await conexao.query(`select * from vagas`);
 
-        if (rowCount === 0) {
-            return res.status(404).json({ mensagem: 'Dados não encontrados!' });
-        }
+        // if (rowCount === 0) {
+        //     return res.status(404).json({ mensagem: 'Dados não encontrados!' });
+        // }
 
 
         return res.status(200).json(rows);
