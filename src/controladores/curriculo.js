@@ -223,9 +223,9 @@ const consultarCurriculo = async (req, res) => {
 
         const { rows, rowCount } = await conexao.query(dadosUsuario, [usuario.id]);
 
-        if (rowCount === 0) {
-            return res.status(404).json({ mensagem: 'Dados não encontrados!' });
-        }
+        // if (rowCount === 0) {
+        //     return res.status(404).json({ mensagem: 'Dados não encontrados!' });
+        // }
 
         
         return res.status(200).json(rows);
@@ -251,9 +251,9 @@ const consultarCurriculoTipo = async (req, res) => {
 
         const { rows, rowCount } = await conexao.query(dadosUsuario, [usuario.id]);
 
-        if (rowCount === 0) {
-            return res.status(404).json({ mensagem: 'Não há Curriculos cadastrados!' });
-        }
+        // if (rowCount === 0) {
+        //     return res.status(404).json({ mensagem: 'Não há Curriculos cadastrados!' });
+        // }
 
         const tipoCurriculo = {
             medio:'medio',
@@ -299,9 +299,9 @@ const consultarCurriculoTipoParams = async (req, res) => {
     try {
         const { rows, rowCount } = await conexao.query(`select * from curriculos where tipo = $1`, [tipo]);
 
-        if (rowCount === 0) {
-            return res.status(404).json({ mensagem: 'Não há Curriculos cadastrados!' });
-        }
+        // if (rowCount === 0) {
+        //     return res.status(404).json({ mensagem: 'Não há Curriculos cadastrados!' });
+        // }
 
            
         return res.status(200).json(rows);

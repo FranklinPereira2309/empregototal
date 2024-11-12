@@ -114,9 +114,9 @@ const consultarUsuario = async (req, res) => {
 
         const { rows, rowCount} = await conexao.query(dadosUsuario, [usuario.id]);
 
-        if(rowCount === 0) {
-            return res.status(404).json({mensagem:'Não há Dados Cadastrados!'});
-        }
+        // if(rowCount === 0) {
+        //     return res.status(404).json({mensagem:'Não há Dados Cadastrados!'});
+        // }
         
         return res.status(200).json(rows[0]);
 
@@ -141,9 +141,9 @@ const consultarTodosUsuario = async (req, res) => {
 
         const { rows, rowCount} = await conexao.query(dadosUsuario);
 
-        if(rowCount === 0) {
-            return res.status(404).json({mensagem:'Não há Dados Cadastrados!'});
-        }
+        // if(rowCount === 0) {
+        //     return res.status(404).json({mensagem:'Não há Dados Cadastrados!'});
+        // }
         
         return res.status(200).json(rows);
 
