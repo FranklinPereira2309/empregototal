@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 const viaCepApi = async (req, res) => {
-    const { cep } = req.params; // Corrigido para req.params, sem .cep
+    const { cep } = req.params; 
 
     try {
         const url = `https://viacep.com.br/ws/${cep}/json/`;
@@ -14,7 +14,6 @@ const viaCepApi = async (req, res) => {
 
         return res.status(200).json(dadosApi);
     } catch (error) {
-        console.error('Erro ao consultar o CEP:', error.message);
         return res.status(500).json({ mensagem: error.message });
     }
 }
