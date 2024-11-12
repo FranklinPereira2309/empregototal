@@ -30,8 +30,8 @@ const cadastrarUsuario = async (req, res) => {
         const schema = yup.object().shape({
             nome_completo: yup.string().required('Nome completo é obrigatório.'), 
             email: yup.string().email('Email inválido.').required('Email é obrigatório.'), 
-            telefone: yup.string().required('O Telefone é obrigatório.'), 
-            cep: yup.string().required('O CEP é obrigatório.'), 
+            telefone: yup.string().matches(/^\d{10,15}$/, 'Telefone deve ter entre 10 e 15 dígitos.'), 
+            cep: yup.string().length(8, 'CEP deve ter exatamente 8 dígitos.'),
             logradouro: yup.string().required('Logradouro é obrigatório.'), 
             cidade: yup.string().required('Cidade é obrigatória.'), 
             estado: yup.string().length(2, 'Estado deve ter exatamente 2 caracteres.'), 
@@ -179,8 +179,8 @@ const atualizarUsuario = async (req, res) => {
         const schema = yup.object().shape({
             nome_completo: yup.string().required('Nome completo é obrigatório.'), 
             email: yup.string().email('Email inválido.').required('Email é obrigatório.'), 
-            telefone: yup.string().required('O Telefone é obrigatório.'), 
-            cep: yup.string().required('O CEP é obrigatório.'), 
+            telefone: yup.string().matches(/^\d{10,15}$/, 'Telefone deve ter entre 10 e 15 dígitos.'), 
+            cep: yup.string().length(8, 'CEP deve ter exatamente 8 dígitos.'), 
             logradouro: yup.string().required('Logradouro é obrigatório.'), 
             cidade: yup.string().required('Cidade é obrigatória.'), 
             estado: yup.string().length(2, 'Estado deve ter exatamente 2 caracteres.'), 
@@ -239,7 +239,7 @@ const atualizarUsuario = async (req, res) => {
             return res.status(400).json({ mensagem: 'Não foi possível criar o usuário.' });        
         }
         
-        return res.status(201).json({mensagem: 'Atualizado com Sucesso!'}); 
+        return res.status(201).json({}); 
 
     } catch (error) {
         return res.status(500).json({ mensagem: `${error.message}` });
