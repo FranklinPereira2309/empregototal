@@ -9,15 +9,14 @@ const transport = nodemailer.createTransport(
         accountId: process.env.ID_ACCOUNT
     })
 );
-// const transport = nodemailer.createTransport(
-//     MailtrapTransport({
-//         host: process.env.MAIL_HOST,
-//         port: process.env.MAIL_PORT,
+// const transport = nodemailer.createTransport({
+//         host: smtp.gmail.com,
+//         service:'gmail',
+//         secure: true,
 //         auth: {
-//             user: process.env.AUTH_USER,
-//             pass: process.env.AUTH_PASS
+//             user: 'empregototal.adm@gmail.com',
+//             pass: '1020'
 //         }
-//     })
-// );
+//     });
 
 module.exports = transport;
