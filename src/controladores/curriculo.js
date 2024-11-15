@@ -204,9 +204,9 @@ const consultarTodosCurriculoSelecionado = async (req, res) => {
         const {rows, rowCount: curriculoEncontrado} = await conexao.query(existeCurriculo, [usuario.id]);
                 
 
-        // if(curriculoEncontrado === 0) {
-        //     return res.status(404).json({ mensagem: 'Não há Curriculo selecionados!'});
-        // }             
+        if(curriculoEncontrado === 0) {
+            return res.status(404).json({ mensagem: 'Não há Curriculo selecionados!'});
+        }             
 
         return res.status(201).json(rows); 
 
