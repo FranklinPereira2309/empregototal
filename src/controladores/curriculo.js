@@ -169,6 +169,8 @@ const cadastrarCurriculoSelecionado = async (req, res) => {
     }
 }
 const consultarTodosCurriculoSelecionado = async (req, res) => {
+
+    const { usuario } = req;
         
     try {
 
@@ -190,11 +192,16 @@ const consultarTodosCurriculoSelecionado = async (req, res) => {
             FROM 
                 curriculos_selecionados cs
             JOIN 
-                curriculos c ON cs.curriculo_id = c.id;
+                curriculos c ON cs.curriculo_id = c.id
+            JOIN 
+                usuarios u ON c.usuario_id = u.id 
+            JOIN 
+                empresas e ON u.id = e.id 
+            WHERE e.id = $1;
 
         `;
 
-        const {rows, rowCount: curriculoEncontrado} = await conexao.query(existeCurriculo);
+        const {rows, rowCount: curriculoEncontrado} = await conexao.query(existeCurriculo, [usuario.id]);
                 
 
         // if(curriculoEncontrado === 0) {
