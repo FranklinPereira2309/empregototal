@@ -32,7 +32,7 @@ rotas.delete('/usuarios_completos/:id', verificarLogin, usuarios_completo.deleta
 rotas.post('/curriculo', verificarLogin, curriculo.cadastrarCurriculo);
 rotas.post('/curriculo_selecionado', curriculo.cadastrarCurriculoSelecionado);
 rotas.get('/curriculosgeral', verificarLogin, curriculo.consultarCurriculo);
-rotas.get('/curriculos_geral_selecionados', curriculo.consultarTodosCurriculoSelecionado);
+rotas.get('/curriculos_geral_selecionados', verificarLoginEmpresa, curriculo.consultarTodosCurriculoSelecionado);
 rotas.get('/curriculos', verificarLogin, curriculo.consultarCurriculoTipo);
 rotas.get('/curriculos_tipo_params/:tipo', curriculo.consultarCurriculoTipoParams);
 rotas.get('/curriculos_vagas', verificarLogin, curriculo.consultarCurriculosVagas);
