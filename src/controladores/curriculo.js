@@ -127,6 +127,8 @@ const cadastrarCurriculo = async (req, res) => {
     }
 }
 const cadastrarCurriculoSelecionado = async (req, res) => {
+
+    const { empresa } = req;
     
     const {
         curriculo_id,
@@ -144,19 +146,19 @@ const cadastrarCurriculoSelecionado = async (req, res) => {
 
         await schema.validate(req.body);
 
-        const existeCurriculo = `select * from curriculos_selecionados where curriculo_id = $1`;
+        const existeCurriculo = `select * from curriculos_selecionados where curriculo_id = $1 and empresa_id = $2`;
 
-        const {rowCount: curriculoEncontrado} = await conexao.query(existeCurriculo, [Number(curriculo_id)]);
+        const {rowCount: curriculoEncontrado} = await conexao.query(existeCurriculo, [Number(curriculo_id), empresa.id]);
                 
 
         if(curriculoEncontrado > 0) {
             return res.status(404).json({ mensagem: 'Curriculo já cadastrado!'});
         }             
 
-        const querySelecionarCurriculo = `INSERT INTO curriculos_selecionados (curriculo_id,visualizar_curriculo)
-            VALUES ($1, $2) RETURNING *`;
+        const querySelecionarCurriculo = `INSERT INTO curriculos_selecionados (curriculo_id, empresa_id,visualizar_curriculo)
+            VALUES ($1,$2, $3) RETURNING *`;
 
-        const { rows, rowCount } = await conexao.query(querySelecionarCurriculo, [Number(curriculo_id), visualizar_curriculo]);
+        const { rows, rowCount } = await conexao.query(querySelecionarCurriculo, [Number(curriculo_id), empresa.id, visualizar_curriculo]);
 
         if (rowCount === 0) {
             return res.status(400).json({ mensagem: 'Não Selecionar o Curriculo!'});
@@ -170,7 +172,7 @@ const cadastrarCurriculoSelecionado = async (req, res) => {
 }
 const consultarTodosCurriculoSelecionado = async (req, res) => {
 
-    const { usuario } = req;
+    const { empresa } = req;
         
     try {
 
@@ -194,19 +196,17 @@ const consultarTodosCurriculoSelecionado = async (req, res) => {
             JOIN 
                 curriculos c ON cs.curriculo_id = c.id
             JOIN 
-                usuarios u ON c.usuario_id = u.id 
-            JOIN 
-                empresas e ON u.id = e.id 
+                empresas e ON cs.empresa_id = e.id 
             WHERE e.id = $1;
 
         `;
 
-        const {rows, rowCount: curriculoEncontrado} = await conexao.query(existeCurriculo, [usuario.id]);
+        const {rows, rowCount: curriculoEncontrado} = await conexao.query(existeCurriculo, [empresa.id]);
                 
 
-        if(curriculoEncontrado === 0) {
-            return res.status(404).json({ mensagem: 'Não há Curriculo selecionados!'});
-        }             
+        // if(curriculoEncontrado === 0) {
+        //     return res.status(404).json({ mensagem: 'Não há Curriculo selecionados!'});
+        // }             
 
         return res.status(201).json(rows); 
 
@@ -567,6 +567,42 @@ const excluirCurriculo = async (req, res) => {
 
 }
 
+const excluirCurriculoSelecionado = async (req, res) => {
+
+    const { empresa }  = req;
+    
+    const idCurriculo = Number(req.params.id);
+    
+    if(isNaN(idCurriculo)) {
+        return res.status(401).json({mensagem: 'Deve ser digitado um número de Id válido!'});
+    }   
+    
+    try {
+        const existeCurriculoSelecionado = `select * from curriculos_selecionados where empresa_id = $1 and curriculo_id= $2`;
+    
+        const {rowCount} = await conexao.query(existeCurriculoSelecionado, [empresa.id, idCurriculo]);
+    
+        if(rowCount === 0) {
+            return res.status(401).json({mensagem: 'nenhum Curriculo Selecionado para esta Empresa!'});
+        }
+
+        const deletar = `delete from curriculos_selecionados where empresa_id = $1 and curriculo_id = $2`;
+        
+
+        const {rowCount: resultadoDeletar} = await conexao.query(deletar, [empresa.id, idCurriculo]);
+
+        if(resultadoDeletar === 0) {
+            return res.status(401).json({mensagem: 'Não foi possível deletar o Curriculo!'});
+        }
+
+        return res.status(201).json({});
+
+    } catch (error) {
+        return res.status(500).json({mensagem: `${error.message}`});
+    }
+
+}
+
 
 
 module.exports = {
@@ -580,5 +616,7 @@ module.exports = {
     consultarCurriculoTipoParams,
     consultarCurriculosVagas,
     consultarTodosCurriculosEmpresa,
-    excluirCurriculo
+    excluirCurriculo,
+    excluirCurriculoSelecionado
+
 }

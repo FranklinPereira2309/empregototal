@@ -30,7 +30,7 @@ rotas.put('/usuarios_completos', verificarLogin, usuarios_completo.atualizarUsua
 rotas.delete('/usuarios_completos/:id', verificarLogin, usuarios_completo.deletarUsuario);
 
 rotas.post('/curriculo', verificarLogin, curriculo.cadastrarCurriculo);
-rotas.post('/curriculo_selecionado', curriculo.cadastrarCurriculoSelecionado);
+rotas.post('/curriculo_selecionado', verificarLoginEmpresa, curriculo.cadastrarCurriculoSelecionado);
 rotas.get('/curriculosgeral', verificarLogin, curriculo.consultarCurriculo);
 rotas.get('/curriculos_geral_selecionados', verificarLoginEmpresa, curriculo.consultarTodosCurriculoSelecionado);
 rotas.get('/curriculos', verificarLogin, curriculo.consultarCurriculoTipo);
@@ -41,6 +41,7 @@ rotas.get('/curriculos_empresa', curriculo.consultarTodosCurriculosEmpresa);
 rotas.put('/curriculo', verificarLogin, curriculo.atualizarCurriculo);
 rotas.patch('/curriculo/:id', curriculo.atualizarCurriculoSelecionado);
 rotas.delete('/curriculo/:id/:tipo', verificarLogin, curriculo.excluirCurriculo);
+rotas.delete('/curriculo_selecionado/:id', verificarLoginEmpresa, curriculo.excluirCurriculoSelecionado);
 
 rotas.get('/empresa', verificarLoginEmpresa, empresa.consultarLoginEmpresa);
 rotas.post('/vagas', verificarLoginEmpresa, vagas.cadastrarVagas);
