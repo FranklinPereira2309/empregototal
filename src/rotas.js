@@ -42,7 +42,7 @@ rotas.put('/curriculo', verificarLogin, curriculo.atualizarCurriculo);
 rotas.patch('/curriculo/:id', curriculo.atualizarCurriculoSelecionado);
 rotas.delete('/curriculo/:id/:tipo', verificarLogin, curriculo.excluirCurriculo);
 rotas.delete('/curriculo_selecionado/:id', verificarLoginEmpresa, curriculo.excluirCurriculoSelecionado);
-
+rotas.put('/empresa_alterar_senha', verificarLoginEmpresa, empresa.alterarSenhaEmpresa);
 rotas.get('/empresa', verificarLoginEmpresa, empresa.consultarLoginEmpresa);
 rotas.post('/vagas', verificarLoginEmpresa, vagas.cadastrarVagas);
 rotas.get('/vaga/:id', verificarLoginEmpresa, vagas.consultarVagaId);
