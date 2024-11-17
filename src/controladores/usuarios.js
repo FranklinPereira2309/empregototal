@@ -132,7 +132,7 @@ const alterarSenhaUsuario = async (req, res) => {
         const senhaVerificada = await bcrypt.compare(senhaAtual, usuarioEncontrado.senha);
     
         if(!senhaVerificada) {
-            return res.status(400).json({mensagem: 'Senha não confere!'});
+            return res.status(400).json({mensagem: 'A Senha atual digitada está errada!'});
         }
     
         const atualizarSenha = `update usuarios set senha = $1 where id = $2`
