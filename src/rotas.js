@@ -22,7 +22,7 @@ rotas.post('/loginEmpresa', loginEmpresa.loginEmpresa); //Logar com a Empresa
 
 rotas.get('/usuario', verificarLogin, usuarios.consultarLogin);
 // rotas.put('/usuario', usuarios.atualizarUsuario);
-
+rotas.put('/usuario_alterar_senha', verificarLogin, usuarios.alterarSenhaUsuario);
 rotas.post('/usuarios_completos', verificarLogin, usuarios_completo.cadastrarUsuario);
 rotas.get('/usuarios_completos', verificarLogin, usuarios_completo.consultarUsuario);
 rotas.get('/todos_usuarios_completos', verificarLogin, usuarios_completo.consultarTodosUsuario);

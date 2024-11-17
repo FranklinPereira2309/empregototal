@@ -110,8 +110,52 @@ const consultarLogin = async (req, res) => {
 
 }
 
+const alterarSenhaUsuario = async (req, res) => {
+    const { usuario } = req;
+
+    const {
+        senhaAtual,
+        novaSenha
+    } = req.body
+
+    try {
+        const existeUsuario = `select * from usuarios where email = $1 and id = $2`;
+    
+        const { rows, rowCount } = await conexao.query(existeUsuario, [usuario.email, usuario.id]);
+    
+        if(rowCount === 0) {
+            return res.status(404).json({mensagem: 'Usuário não encontrado'});
+        }
+    
+        const usuarioEncontrado = rows[0];
+    
+        const senhaVerificada = await bcrypt.compare(senhaAtual, usuarioEncontrado.senha);
+    
+        if(!senhaVerificada) {
+            return res.status(400).json({mensagem: 'Senha não confere!'});
+        }
+    
+        const atualizarSenha = `update usuarios set senha = $1 where id = $2`
+
+        const senhaEncriptada = await bcrypt.hash(novaSenha, 10);
+    
+        const { rows: dadosAlterados, rowCount:dadosEncontrados} = await conexao.query(atualizarSenha, [senhaEncriptada, usuario.id]);
+    
+        if(dadosEncontrados === 0) {
+            return res.status(400).json({mensagem: 'Não foi possível alterar a senha!'});
+    
+        }
+    
+        return res.status(201).json({});
+        
+    } catch (error) {
+        return res.status(500).json({mensagem: `${error.message}`});
+    }
+
+}
 module.exports = {
     cadastrarLogin,
     consultarLogin,
+    alterarSenhaUsuario
 
 }
