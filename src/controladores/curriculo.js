@@ -476,7 +476,7 @@ const atualizarCurriculo = async (req, res) => {
         }
 
         
-        return res.status(201).json({mensagem: 'Atualizaçãso realizada com Sucesso!'}); 
+        return res.status(201).json({}); 
 
     } catch (error) {
         console.error('Erro ao cadastrar curriculo:', error); 
