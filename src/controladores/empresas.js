@@ -158,14 +158,14 @@ const alterarSenhaEmpresaDeslogado = async (req, res) => {
     
     const {
         email,
-        cpf,
+        cnpj,
         novaSenha
     } = req.body
 
     try {
-        const existeUsuario = `select * from usuarios where email = $1 and cpf = $2`;
+        const existeUsuario = `select * from empresas where email = $1 and cnpj = $2`;
     
-        const { rows, rowCount } = await conexao.query(existeUsuario, [email, cpf]);
+        const { rows, rowCount } = await conexao.query(existeUsuario, [email, cnpj]);
     
         if(rowCount === 0) {
             return res.status(404).json({mensagem: 'Dados digitados não conferem!'});
@@ -175,7 +175,7 @@ const alterarSenhaEmpresaDeslogado = async (req, res) => {
     
         const senhaEncriptada = await bcrypt.hash(novaSenha, 10);
         
-        const atualizarSenha = `update usuarios set senha = $1 where id = $2`
+        const atualizarSenha = `update empresas set senha = $1 where id = $2`
 
     
         const { rows: dadosAlterados, rowCount:dadosEncontrados} = await conexao.query(atualizarSenha, [senhaEncriptada, id]);
