@@ -57,7 +57,7 @@ const cadastrarCurriculo = async (req, res) => {
         
         if(curriculoTipo === tipos.medio) {
 
-            const curriculo1 = `select * from curriculos where usuario_id = $1 and apelido = $2 and tipo = $2`;
+            const curriculo1 = `select * from curriculos where usuario_id = $1 and apelido = $2 and tipo = $3`;
     
             const { rows: tipoCurriculo1, rowCount:dadosCurriculo1} = await conexao.query(curriculo1, [usuario.id, apelido, tipo]);
     
@@ -67,7 +67,7 @@ const cadastrarCurriculo = async (req, res) => {
         }
 
         if(curriculoTipo === tipos.tecnico) {
-            const curriculo2 = `select * from curriculos where usuario_id = $1 and apelido = $2 and tipo = $2`;
+            const curriculo2 = `select * from curriculos where usuario_id = $1 and apelido = $2 and tipo = $3`;
     
             const { rows:tipoCurriculo2, rowCount:dadosCurriculo2} = await conexao.query(curriculo2, [usuario.id, apelido, tipo]);
     
@@ -79,7 +79,7 @@ const cadastrarCurriculo = async (req, res) => {
 
         if(curriculoTipo === tipos.profissiona) {
 
-            const curriculo3 = `select * from curriculos where usuario_id = $1 and apelido = $2 and tipo = $2`;
+            const curriculo3 = `select * from curriculos where usuario_id = $1 and apelido = $2 and tipo = $3`;
     
             const { rows:tipoCurriculo3, rowCount:dadosCurriculo3} = await conexao.query(curriculo3, [usuario.id, apelido, tipo]);
     
