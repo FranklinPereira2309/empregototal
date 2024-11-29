@@ -97,11 +97,11 @@ CREATE TABLE curriculos_selecionados (
     data TIMESTAMP DEFAULT NOW(),
     visualizar_curriculo BOOLEAN NOT NULL,
     empresa_id INT NOT NULL,
-    CONSTRAINT fk_empresas FOREIGN KEY (empresa_id) REFERENCES empresas(id) 
+    CONSTRAINT fk_empresas FOREIGN KEY (empresa_id) REFERENCES empresas(id),
     curriculo_id INT NOT NULL,
-    CONSTRAINT fk_curriculos FOREIGN KEY (curriculo_id) REFERENCES curriculos(id)  
-    
+    CONSTRAINT fk_curriculos FOREIGN KEY (curriculo_id) REFERENCES curriculos(id)
 );
+
 
 
 
