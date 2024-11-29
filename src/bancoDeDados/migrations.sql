@@ -55,7 +55,8 @@ CREATE TABLE curriculos (
     habilidades TEXT NOT NULL,
     idiomas VARCHAR(255) NOT NULL,
     referencias TEXT NOT NULL,
-    tipo TEXT NOT NULL CHECK (tipo IN ('medio', 'tecnico', 'profissional')),
+    apelido TEXT NOT NULL,
+    tipo TEXT NOT NULL CHECK (tipo IN ('médio', 'técnico', 'profissional')),
     usuario_id INT NOT NULL, 
     CONSTRAINT fk_usuarios FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
 );
