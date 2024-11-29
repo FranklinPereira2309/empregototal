@@ -21,6 +21,7 @@ const cadastrarCurriculo = async (req, res) => {
         habilidades,
         idiomas,
         referencias,
+        apelido,
         tipo,
         usuario_id
     } = req.body;
@@ -39,44 +40,51 @@ const cadastrarCurriculo = async (req, res) => {
             habilidades: yup.string().required('Habilidade é obrigatório.').max(1024),
             idiomas: yup.string().required('Idioma é obrigatório.').max(255),
             referencias: yup.string().required('Referência é obrigatório.').max(255),
-            tipo: yup.string().oneOf(['medio', 'tecnico', 'profissional'], 'Tipo de Curriculo deve ser selecionado!'),
+            apelido: yup.string().required('Apelido é obrigatório.').max(255),
+            tipo: yup.string().oneOf(['curriculo1', 'curriculo2', 'curriculo3'], 'Tipo de Curriculo deve ser selecionado!'),
 
         });
 
         await schema.validate(req.body);
 
         const curriculoTipo = tipo;
+
+        const tipos = {
+            medio: 'médio',
+            tecnico: 'técnico',
+            profissiona: 'profissional'
+        }
         
-        if(curriculoTipo === 'medio') {
+        if(curriculoTipo === tipos.medio) {
 
-            const medio = `select * from curriculos where usuario_id = $1 and tipo = $2`;
+            const curriculo1 = `select * from curriculos where usuario_id = $1 and apelido = $2 and tipo = $2`;
     
-            const { rows: tipoMedio, rowCount:dadosMedio} = await conexao.query(medio, [usuario.id, tipo]);
+            const { rows: tipoCurriculo1, rowCount:dadosCurriculo1} = await conexao.query(curriculo1, [usuario.id, apelido, tipo]);
     
-            if(dadosMedio > 0) {
-                return res.status(400).json({mensagem:'Já exitem um Curriculo do tipo Médio!'});
+            if(dadosCurriculo1 > 0) {
+                return res.status(400).json({mensagem: `Já exitem um Curriculo com o nome: ${apelido}! cadastrado!`});
             }
         }
 
-        if(curriculoTipo === 'tecnico') {
-            const tecnico = `select * from curriculos where usuario_id = $1 and tipo = $2`;
+        if(curriculoTipo === tipos.tecnico) {
+            const curriculo2 = `select * from curriculos where usuario_id = $1 and apelido = $2 and tipo = $2`;
     
-            const { rows:tipoTecnico, rowCount:dadosTecnico} = await conexao.query(tecnico, [usuario.id, tipo]);
+            const { rows:tipoCurriculo2, rowCount:dadosCurriculo2} = await conexao.query(curriculo2, [usuario.id, apelido, tipo]);
     
-            if(dadosTecnico > 0) {
-                return res.status(400).json({mensagem:'Já exitem um Curriculo do tipo Técnico!'});
+            if(dadosCurriculo2 > 0) {
+                return res.status(400).json({mensagem: `Já exitem um Curriculo com o nome: ${apelido}! cadastrado!`});
             }
 
         }
 
-        if(curriculoTipo === 'profissional') {
+        if(curriculoTipo === tipos.profissiona) {
 
-            const profissional = `select * from curriculos where usuario_id = $1 and tipo = $2`;
+            const curriculo3 = `select * from curriculos where usuario_id = $1 and apelido = $2 and tipo = $2`;
     
-            const { rows:tipoProfissional, rowCount:dadosProfissional} = await conexao.query(profissional, [usuario.id, tipo]);
+            const { rows:tipoCurriculo3, rowCount:dadosCurriculo3} = await conexao.query(curriculo3, [usuario.id, apelido, tipo]);
     
-            if(dadosProfissional > 0) {
-                return res.status(400).json({mensagem:'Já exitem um Curriculo do tipo Profissional!'});
+            if(dadosCurriculo3 > 0) {
+                return res.status(400).json({mensagem: `Já exitem um Curriculo com o nome: ${apelido}! cadastrado!`});
             }                         
         }
 
@@ -94,9 +102,10 @@ const cadastrarCurriculo = async (req, res) => {
                         habilidades,
                         idiomas,
                         referencias,
+                        apelido,
                         tipo,
                         usuario_id 
-                    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+                    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
                     RETURNING *`;
 
         const { rows, rowCount } = await conexao.query(queryCriarUsuario, [
@@ -110,6 +119,7 @@ const cadastrarCurriculo = async (req, res) => {
             habilidades,
             idiomas,
             referencias,
+            apelido,
             tipo,
             usuario_id
         ]);
@@ -228,12 +238,7 @@ const consultarCurriculo = async (req, res) => {
 
         const dadosUsuario = `select * from curriculos where usuario_id = $1`;
 
-        const { rows, rowCount } = await conexao.query(dadosUsuario, [usuario.id]);
-
-        // if (rowCount === 0) {
-        //     return res.status(404).json({ mensagem: 'Dados não encontrados!' });
-        // }
-
+        const { rows } = await conexao.query(dadosUsuario, [usuario.id]);
         
         return res.status(200).json(rows);
         
@@ -245,8 +250,7 @@ const consultarCurriculo = async (req, res) => {
 }
 const consultarCurriculoTipo = async (req, res) => {
 
-    const { usuario } = req;   
-    
+    const { usuario } = req;       
 
     try {
 
@@ -262,34 +266,34 @@ const consultarCurriculoTipo = async (req, res) => {
             return res.status(404).json({ mensagem: 'Não há Curriculos cadastrados!' });
         }
 
-        const tipoCurriculo = {
-            medio:'medio',
-            tecnico:'tecnico',
+        const tipos = {
+            medio:'médio',
+            tecnico:'técnico',
             profissional:'profissional'
 
         }
         
 
-        const medio = `select * from curriculos where usuario_id = $1 and tipo = $2`;
+        const curriculo1 = `select * from curriculos where usuario_id = $1 and tipo = $2`;
 
-        const { rows: tipoMedio, rowCount:dadosMedio} = await conexao.query(medio, [usuario.id, tipoCurriculo.medio]);
+        const { rows: tipoCurriculo1 } = await conexao.query(curriculo1, [usuario.id, tipos.medio]);
 
                              
-        const tecnico = `select * from curriculos where usuario_id = $1 and tipo = $2`;
+        const curriculo2 = `select * from curriculos where usuario_id = $1 and tipo = $2`;
 
-        const { rows:tipoTecnico, rowCount:dadosTecnico} = await conexao.query(tecnico, [usuario.id, tipoCurriculo.tecnico]);
+        const { rows:tipoCurriculo2 } = await conexao.query(curriculo2, [usuario.id, tipos.tecnico]);
                 
-        const profissional = `select * from curriculos where usuario_id = $1 and tipo = $2`;
+        const curriculo3 = `select * from curriculos where usuario_id = $1 and tipo = $2`;
 
-        const { rows:tipoProfissional, rowCount:dadosProfissional} = await conexao.query(profissional, [usuario.id, tipoCurriculo.profissional]);
+        const { rows:tipoCurriculo3 } = await conexao.query(curriculo3, [usuario.id, tipos.profissional]);
         
              
 
 
         return res.status(200).json({
-            cMedio: tipoMedio[0],
-            cTecnico: tipoTecnico[0],
-            cProfissional: tipoProfissional[0]
+            cMedio: tipoCurriculo1[0],
+            cTecnico: tipoCurriculo2[0],
+            cProfissional: tipoCurriculo3[0]
         });
        
 
@@ -304,13 +308,8 @@ const consultarCurriculoTipoParams = async (req, res) => {
     const tipo = req.params.tipo;    
 
     try {
-        const { rows, rowCount } = await conexao.query(`select * from curriculos where tipo = $1`, [tipo]);
+        const { rows } = await conexao.query(`select * from curriculos where tipo = $1`, [tipo]);
 
-        // if (rowCount === 0) {
-        //     return res.status(404).json({ mensagem: 'Não há Curriculos cadastrados!' });
-        // }
-
-           
         return res.status(200).json(rows);
        
 
@@ -379,12 +378,7 @@ const consultarCurriculosVagas = async (req, res) => {
                 u.id = $1;
         `
 
-        const { rows, rowCount } = await conexao.query(queryCurriculosCadastrados, [usuario.id]);
-
-        // if (rowCount === 0) {
-        //     return res.status(404).json({ mensagem: 'Não há Cadastros no Momento!' });
-        // }
-
+        const { rows } = await conexao.query(queryCurriculosCadastrados, [usuario.id]);
 
         return res.status(200).json(rows);
 
@@ -410,6 +404,7 @@ const atualizarCurriculo = async (req, res) => {
         habilidades,
         idiomas,
         referencias,
+        apelido,
         tipo,
         
     
@@ -430,6 +425,7 @@ const atualizarCurriculo = async (req, res) => {
             habilidades: yup.string().required('Habilidade é obrigatório.').max(1024),
             idiomas: yup.string().required('Idioma é obrigatório.').max(255),
             referencias: yup.string().required('Referência é obrigatório.').max(255),
+            apelido: yup.string().required('Apelido é obrigatório.').max(255),
             tipo: yup.string().oneOf(['medio', 'tecnico', 'profissional'], 'Tipo de Curriculo deve ser selecionado!'),
             
 
@@ -449,11 +445,12 @@ const atualizarCurriculo = async (req, res) => {
                         experiencia = $7, 
                         habilidades = $8,
                         idiomas = $9,
-                        referencias = $10                                        
-                        WHERE usuario_id = $11 and tipo = $12
+                        referencias = $10,
+                        apelido = $11,                                        
+                        WHERE usuario_id = $12 and tipo = $13
                         `;
 
-        const { rows, rowCount } = await conexao.query(queryAtualizarUsuario, [
+        const { rowCount } = await conexao.query(queryAtualizarUsuario, [
             nome,
             email,
             telefone,
@@ -464,6 +461,7 @@ const atualizarCurriculo = async (req, res) => {
             habilidades,
             idiomas,
             referencias,
+            apelido,
             usuario.id,
             curriculoTipo
             
