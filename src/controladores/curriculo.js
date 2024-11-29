@@ -57,9 +57,9 @@ const cadastrarCurriculo = async (req, res) => {
         
         if(curriculoTipo === tipos.medio) {
 
-            const curriculo1 = `select * from curriculos where usuario_id = $1 and apelido = $2 and tipo = $3`;
+            const curriculo1 = `select * from curriculos where usuario_id = $1 and tipo = $2`;
     
-            const { rows: tipoCurriculo1, rowCount:dadosCurriculo1} = await conexao.query(curriculo1, [usuario.id, apelido, tipo]);
+            const { rows: tipoCurriculo1, rowCount:dadosCurriculo1} = await conexao.query(curriculo1, [usuario.id, tipo]);
     
             if(dadosCurriculo1 > 0) {
                 return res.status(400).json({mensagem: `Já exite um Curriculo com o nome: ${apelido}! cadastrado!`});
@@ -67,9 +67,9 @@ const cadastrarCurriculo = async (req, res) => {
         }
 
         if(curriculoTipo === tipos.tecnico) {
-            const curriculo2 = `select * from curriculos where usuario_id = $1 and apelido = $2 and tipo = $3`;
+            const curriculo2 = `select * from curriculos where usuario_id = $1 and tipo = $2`;
     
-            const { rows:tipoCurriculo2, rowCount:dadosCurriculo2} = await conexao.query(curriculo2, [usuario.id, apelido, tipo]);
+            const { rows:tipoCurriculo2, rowCount:dadosCurriculo2} = await conexao.query(curriculo2, [usuario.id,tipo]);
     
             if(dadosCurriculo2 > 0) {
                 return res.status(400).json({mensagem: `Já exite um Curriculo com o nome: ${apelido}! cadastrado!`});
@@ -79,9 +79,9 @@ const cadastrarCurriculo = async (req, res) => {
 
         if(curriculoTipo === tipos.profissional) {
 
-            const curriculo3 = `select * from curriculos where usuario_id = $1 and apelido = $2 and tipo = $3`;
+            const curriculo3 = `select * from curriculos where usuario_id = $1 and tipo = $2`;
     
-            const { rows:tipoCurriculo3, rowCount:dadosCurriculo3} = await conexao.query(curriculo3, [usuario.id, apelido, tipo]);
+            const { rows:tipoCurriculo3, rowCount:dadosCurriculo3} = await conexao.query(curriculo3, [usuario.id, tipo]);
     
             if(dadosCurriculo3 > 0) {
                 return res.status(400).json({mensagem: `Já exite um Curriculo com o nome: ${apelido}! cadastrado!`});
