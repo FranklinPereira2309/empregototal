@@ -426,7 +426,7 @@ const atualizarCurriculo = async (req, res) => {
             idiomas: yup.string().required('Idioma é obrigatório.').max(255),
             referencias: yup.string().required('Referência é obrigatório.').max(255),
             apelido: yup.string().required('Apelido é obrigatório.').max(255),
-            tipo: yup.string().oneOf(['medio', 'tecnico', 'profissional'], 'Tipo de Curriculo deve ser selecionado!'),
+            tipo: yup.string().oneOf(['médio', 'técnico', 'profissional'], 'Tipo de Curriculo deve ser selecionado!'),
             
 
         });
