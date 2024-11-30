@@ -53,16 +53,17 @@ const cadastrarCurriculo = async (req, res) => {
             profissional: 'profissional'
         }
         
+       
+
         if(tipo === tipos.medio) {
 
             const curriculo1 = `select * from curriculos where usuario_id = $1 and tipo = $2`;
            
             const { rows: tipoCurriculo1, rowCount:dadosCurriculo1} = await conexao.query(curriculo1, [usuario.id, tipo]);
 
-            let tipo_curriculo_front = tipoCurriculo1[0].tipo === 'médio'? 'Curriculo 1': '';
-               
+                          
             if(dadosCurriculo1 > 0) {
-                return res.status(400).json({mensagem: `Já exite um ${tipo_curriculo_front} - Descrição: ${tipoCurriculo1[0].apelido} cadastrado!`});
+                return res.status(400).json({mensagem: `Já exite um Curriculo 1 - Descrição: ${tipoCurriculo1[0].apelido} cadastrado!`});
             }
         }
 
@@ -71,10 +72,9 @@ const cadastrarCurriculo = async (req, res) => {
     
             const { rows:tipoCurriculo2, rowCount:dadosCurriculo2} = await conexao.query(curriculo2, [usuario.id,tipo]);
 
-            let tipo_curriculo_front = tipoCurriculo2[0].tipo === 'técnico'? 'Curriculo 2': '';
-    
+                
             if(dadosCurriculo2 > 0) {
-                return res.status(400).json({mensagem: `Já exite um ${tipo_curriculo_front} - Descrição: ${tipoCurriculo2[0].apelido} cadastrado!`});
+                return res.status(400).json({mensagem: `Já exite um Curriculo 2 - Descrição: ${tipoCurriculo2[0].apelido} cadastrado!`});
             }
 
         }
@@ -84,15 +84,13 @@ const cadastrarCurriculo = async (req, res) => {
             const curriculo3 = `select * from curriculos where usuario_id = $1 and tipo = $2`;
     
             const { rows:tipoCurriculo3, rowCount:dadosCurriculo3} = await conexao.query(curriculo3, [usuario.id, tipo]);
-
-            let tipo_curriculo_front = tipoCurriculo3[0].tipo === 'profissional'? 'Curriculo 3': '';
-    
+                
             if(dadosCurriculo3 > 0) {
-                return res.status(400).json({mensagem: `Já exite um ${tipo_curriculo_front} - Descrição: ${tipoCurriculo3[0].apelido} cadastrado!`});
+                return res.status(400).json({mensagem: `Já exite um Curriculo 3 - Descrição: ${tipoCurriculo3[0].apelido} cadastrado!`});
             }                         
         }
 
-        const queryCriarUsuario = `INSERT INTO curriculos (
+        const queryCriarCurriculo = `INSERT INTO curriculos (
                         nome, 
                         email, 
                         telefone, 
@@ -109,7 +107,7 @@ const cadastrarCurriculo = async (req, res) => {
                     ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
                     RETURNING *`;
 
-        const { rows, rowCount } = await conexao.query(queryCriarUsuario, [
+        const { rowCount } = await conexao.query(queryCriarCurriculo, [
             nome,
             email,
             telefone,
@@ -447,7 +445,7 @@ const atualizarCurriculo = async (req, res) => {
                         habilidades = $8,
                         idiomas = $9,
                         referencias = $10,
-                        apelido = $11,                                        
+                        apelido = $11                                        
                         WHERE usuario_id = $12 and tipo = $13
                         `;
 
