@@ -58,11 +58,18 @@ const cadastrarCurriculo = async (req, res) => {
         if(curriculoTipo === tipos.medio) {
 
             const curriculo1 = `select * from curriculos where usuario_id = $1 and tipo = $2`;
+            console.log(curriculo1);
+            
     
             const { rows: tipoCurriculo1, rowCount:dadosCurriculo1} = await conexao.query(curriculo1, [usuario.id, tipo]);
+
+            console.log(tipoCurriculo1);
+            console.log(dadosCurriculo1);
+            
+            
     
             if(dadosCurriculo1 > 0) {
-                return res.status(400).json({mensagem: `Já exite um Curriculo com o nome: ${apelido}! cadastrado!`});
+                return res.status(400).json({mensagem: `Já exite um Curriculo 1 cadastrado!`});
             }
         }
 
