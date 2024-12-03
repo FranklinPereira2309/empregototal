@@ -40,7 +40,7 @@ const cadastrarCurriculo = async (req, res) => {
             habilidades: yup.string().required('Habilidade é obrigatório.').max(1024),
             idiomas: yup.string().required('Idioma é obrigatório.').max(255),
             referencias: yup.string().required('Referência é obrigatório.').max(255),
-            apelido: yup.string().required('Apelido é obrigatório.').max(255),
+            apelido: yup.string().max(255),
             tipo: yup.string().oneOf(['médio', 'técnico', 'profissional'], 'Tipo de Curriculo deve ser selecionado!'),
 
         });
