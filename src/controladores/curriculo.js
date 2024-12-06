@@ -361,7 +361,8 @@ const consultarCurriculosVagas = async (req, res) => {
                 v.data,
                 v.pcd,
                 vc.vaga_id,
-                c.tipo
+                c.tipo,
+                c.apelido
                 
             FROM 
                 vagas_curriculos vc
