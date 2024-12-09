@@ -47,7 +47,7 @@ const cadastrarLogin = async (req, res) => {
 
         const { senha: senhaUsuario, ...dadosUsuario } = usuario[0];
 
-        const { nome:nomeCadastrado, email:emailCadastrado, cpf:cpfCadastrado } = usuario[0]
+        const { nome: nomeCadastrado, email: emailCadastrado, cpf: cpfCadastrado } = usuario[0]
 
         const html = `
                 <div>
@@ -120,41 +120,80 @@ const alterarSenhaUsuario = async (req, res) => {
 
     try {
         const existeUsuario = `select * from usuarios where email = $1 and id = $2`;
-    
+
         const { rows, rowCount } = await conexao.query(existeUsuario, [usuario.email, usuario.id]);
-    
-        if(rowCount === 0) {
-            return res.status(404).json({mensagem: 'Usuário não encontrado'});
+
+
+        if (rowCount === 0) {
+            return res.status(404).json({ mensagem: 'Usuário não encontrado' });
         }
-    
+
+        const { nome: nomeCadastrado, email: emailCadastrado, cpf: cpfCadastrado } = rows[0]
+
         const usuarioEncontrado = rows[0];
-    
+
         const senhaVerificada = await bcrypt.compare(senhaAtual, usuarioEncontrado.senha);
-    
-        if(!senhaVerificada) {
-            return res.status(400).json({mensagem: 'A Senha atual digitada está errada!'});
+
+        if (!senhaVerificada) {
+            return res.status(400).json({ mensagem: 'A Senha atual digitada está errada!' });
         }
-    
+
         const atualizarSenha = `update usuarios set senha = $1 where id = $2`
 
         const senhaEncriptada = await bcrypt.hash(novaSenha, 10);
-    
-        const { rows: dadosAlterados, rowCount:dadosEncontrados} = await conexao.query(atualizarSenha, [senhaEncriptada, usuario.id]);
-    
-        if(dadosEncontrados === 0) {
-            return res.status(400).json({mensagem: 'Não foi possível alterar a senha!'});
-    
+
+        const { rows: dadosAlterados, rowCount: dadosEncontrados } = await conexao.query(atualizarSenha, [senhaEncriptada, usuario.id]);
+
+        if (dadosEncontrados === 0) {
+            return res.status(400).json({ mensagem: 'Não foi possível alterar a senha!' });
+
         }
-    
+
+
+        const html = `
+                <div>
+                <h1>Alteração de Senha realizada com sucesso!, <span class="info">${nomeCadastrado}</span>!</h1>
+                <p>Caso não tenha sido você altere sua senha imediatamente ou entre em contato conosco!</p>
+                 
+                <p>Aqui estão os seus dados de cadastro:</p>
+                <ul>
+                    <li><strong>Nome:</strong> <span>${nomeCadastrado}</span></li>
+                    <li><strong>Email:</strong> <span>${emailCadastrado}</span></li>
+                    <li><strong>CPF:</strong> <span>${cpfCadastrado}</span></li>
+                    <li><strong>Nova Senha:</strong> <span></span>${novaSenha}</li>
+                </ul>
+                <p>Guarde essas informações em um local seguro. Caso precise de ajuda, nossa equipe está à disposição!</p>
+                <p>Atenciosamente,<br>Sua equipe de suporte</p>
+        `
+
+        const sender = {
+            address: "empregototal_adm@gmail.com",
+            name: "Emprego Total",
+        };
+        const recipients = [
+            email
+        ];
+        transport
+            .sendMail({
+                from: sender,
+                to: recipients,
+                subject: "Alteração de Senha!",
+                text: "Congrats for sending test email with Mailtrap!",
+                html: html,
+                category: "Integration Test",
+                sandbox: true
+            })
+            .then(console.log, console.error);
+
         return res.status(201).json({});
-        
+
     } catch (error) {
-        return res.status(500).json({mensagem: `${error.message}`});
+        return res.status(500).json({ mensagem: `${error.message}` });
     }
 
 }
 const alterarSenhaUsuarioDeslogado = async (req, res) => {
-    
+
     const {
         email,
         cpf,
@@ -163,31 +202,68 @@ const alterarSenhaUsuarioDeslogado = async (req, res) => {
 
     try {
         const existeUsuario = `select * from usuarios where email = $1 and cpf = $2`;
-    
+
         const { rows, rowCount } = await conexao.query(existeUsuario, [email, cpf]);
-    
-        if(rowCount === 0) {
-            return res.status(404).json({mensagem: 'Dados digitados não conferem!'});
+
+        const { nome: nomeCadastrado, email: emailCadastrado, cpf: cpfCadastrado } = rows[0]
+
+        if (rowCount === 0) {
+            return res.status(404).json({ mensagem: 'Dados digitados não conferem!' });
         }
-    
+
         const { id } = rows[0];
-    
+
         const senhaEncriptada = await bcrypt.hash(novaSenha, 10);
-        
+
         const atualizarSenha = `update usuarios set senha = $1 where id = $2`
 
-    
-        const { rows: dadosAlterados, rowCount:dadosEncontrados} = await conexao.query(atualizarSenha, [senhaEncriptada, id]);
-    
-        if(dadosEncontrados === 0) {
-            return res.status(400).json({mensagem: 'Não foi possível alterar a senha!'});
-    
+
+        const { rows: dadosAlterados, rowCount: dadosEncontrados } = await conexao.query(atualizarSenha, [senhaEncriptada, id]);
+
+        if (dadosEncontrados === 0) {
+            return res.status(400).json({ mensagem: 'Não foi possível alterar a senha!' });
+
         }
-    
+
+        const html = `
+        <div>
+        <h1>Alteração de Senha realizada com sucesso!, <span class="info">${nomeCadastrado}</span>!</h1>
+        <p>Caso não tenha sido você altere sua senha imediatamente ou entre em contato conosco!</p>
+         
+        <p>Aqui estão os seus dados de cadastro:</p>
+        <ul>
+            <li><strong>Nome:</strong> <span>${nomeCadastrado}</span></li>
+            <li><strong>Email:</strong> <span>${emailCadastrado}</span></li>
+            <li><strong>CPF:</strong> <span>${cpfCadastrado}</span></li>
+            <li><strong>Nova Senha:</strong> <span></span>${novaSenha}</li>
+        </ul>
+        <p>Guarde essas informações em um local seguro. Caso precise de ajuda, nossa equipe está à disposição!</p>
+        <p>Atenciosamente,<br>Sua equipe de suporte</p>
+`
+
+        const sender = {
+            address: "empregototal_adm@gmail.com",
+            name: "Emprego Total",
+        };
+        const recipients = [
+            email
+        ];
+        transport
+            .sendMail({
+                from: sender,
+                to: recipients,
+                subject: "Alteração de Senha!",
+                text: "Congrats for sending test email with Mailtrap!",
+                html: html,
+                category: "Integration Test",
+                sandbox: true
+            })
+            .then(console.log, console.error);
+
         return res.status(201).json({});
-        
+
     } catch (error) {
-        return res.status(500).json({mensagem: `${error.message}`});
+        return res.status(500).json({ mensagem: `${error.message}` });
     }
 
 }
