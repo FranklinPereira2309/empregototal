@@ -171,7 +171,7 @@ const alterarSenhaUsuario = async (req, res) => {
             name: "Emprego Total",
         };
         const recipients = [
-            email
+            emailCadastrado
         ];
         transport
             .sendMail({
@@ -246,7 +246,7 @@ const alterarSenhaUsuarioDeslogado = async (req, res) => {
             name: "Emprego Total",
         };
         const recipients = [
-            email
+            emailCadastrado
         ];
         transport
             .sendMail({
