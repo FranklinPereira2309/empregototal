@@ -204,12 +204,12 @@ const alterarSenhaUsuarioDeslogado = async (req, res) => {
         const existeUsuario = `select * from usuarios where email = $1 and cpf = $2`;
 
         const { rows, rowCount } = await conexao.query(existeUsuario, [email, cpf]);
-
-        const { nome: nomeCadastrado, email: emailCadastrado, cpf: cpfCadastrado } = rows[0]
-
+        
         if (rowCount === 0) {
             return res.status(404).json({ mensagem: 'Dados digitados não conferem!' });
         }
+
+        const { nome: nomeCadastrado, email: emailCadastrado, cpf: cpfCadastrado } = rows[0]
 
         const { id } = rows[0];
 
