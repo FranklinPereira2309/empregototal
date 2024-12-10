@@ -241,7 +241,7 @@ const alterarSenhaEmpresaDeslogado = async (req, res) => {
 
         const html = `
                 <div>
-                <h1>Alteração de Senha realizada com sucesso!, <span class="info">${nomeCadastrado}</span>!</h1>
+                <h1>Recuperação de Senha realizada com sucesso!, <span class="info">${nomeCadastrado}</span>!</h1>
                 <p>Caso não tenha sido você altere sua senha imediatamente ou entre em contato conosco!</p>
                  
                 <p>Aqui estão os seus dados de cadastro:</p>
