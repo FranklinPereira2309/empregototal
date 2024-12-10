@@ -121,7 +121,8 @@ const alterarSenhaEmpresa = async (req, res) => {
     try {
         setLocale(pt);
         const schema = yup.object().shape({
-            senha: yup.string().min(5, 'A senha deve ter pelo menos 5 caracteres').required()
+            senhaAtual: yup.string().min(5, 'A senha deve ter pelo menos 5 caracteres').required(),
+            novaSenha: yup.string().min(5, 'A senha deve ter pelo menos 5 caracteres').required()
         });
 
         await schema.validate(req.body);
@@ -210,7 +211,7 @@ const alterarSenhaEmpresaDeslogado = async (req, res) => {
         const schema = yup.object().shape({
             email: yup.string().email('Formato de e-mail é inválido!').required(),
             cnpj: yup.string().required().matches(/^\d{14}$/, 'O CNPJ deve conter apenas números').test('cnpj-valido', 'cnpj inválido', value => cnpjUsuario.isValid(value)),
-            senha: yup.string().min(5, 'A senha deve ter pelo menos 5 caracteres').required()
+            novaSenha: yup.string().min(5, 'A senha deve ter pelo menos 5 caracteres').required()
         });
 
         await schema.validate(req.body);

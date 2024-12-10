@@ -121,11 +121,12 @@ const alterarSenhaUsuario = async (req, res) => {
     try {
         setLocale(pt);
         const schema = yup.object().shape({
-            senha: yup.string().min(5, 'A senha deve ter pelo menos 5 caracteres').required()
+            senhaAtual: yup.string().min(5, 'A senha deve ter pelo menos 5 caracteres').required(),
+            novaSenha: yup.string().min(5, 'A senha deve ter pelo menos 5 caracteres').required()
         });
 
         await schema.validate(req.body);
-        
+
         const existeUsuario = `select * from usuarios where email = $1 and id = $2`;
 
         const { rows, rowCount } = await conexao.query(existeUsuario, [usuario.email, usuario.id]);
@@ -212,7 +213,7 @@ const alterarSenhaUsuarioDeslogado = async (req, res) => {
         const schema = yup.object().shape({
             email: yup.string().email('Formato de e-mail é inválido!').required(),
             cpf: yup.string().required().matches(/^\d{11}$/, 'O CPF deve conter apenas números').test('cpf-valido', 'cpf inválido', value => cpfUsuario.isValid(value)),
-            senha: yup.string().min(5, 'A senha deve ter pelo menos 5 caracteres').required()
+            novaSenha: yup.string().min(5, 'A senha deve ter pelo menos 5 caracteres').required()
         });
 
         await schema.validate(req.body);
