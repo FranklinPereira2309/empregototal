@@ -119,6 +119,12 @@ const alterarSenhaEmpresa = async (req, res) => {
     } = req.body
 
     try {
+        setLocale(pt);
+        const schema = yup.object().shape({
+            senha: yup.string().min(5, 'A senha deve ter pelo menos 5 caracteres').required()
+        });
+
+        await schema.validate(req.body);
         const existeEmpresa = `select * from empresas where email = $1 and id = $2`;
     
         const { rows, rowCount } = await conexao.query(existeEmpresa, [empresa.email, empresa.id]);
@@ -126,7 +132,9 @@ const alterarSenhaEmpresa = async (req, res) => {
         if(rowCount === 0) {
             return res.status(404).json({mensagem: 'Usuário não encontrado'});
         }
-    
+        
+        const { nome:nomeCadastrado, email:emailCadastrado, cnpj:cnpjCadastrado } = rows[0];
+
         const usuarioEncontrado = rows[0];
     
         const senhaVerificada = await bcrypt.compare(senhaAtual, usuarioEncontrado.senha);
@@ -145,6 +153,41 @@ const alterarSenhaEmpresa = async (req, res) => {
             return res.status(400).json({mensagem: 'Não foi possível alterar a senha!'});
     
         }
+        
+        const html = `
+                <div>
+                <h1>Alteração de Senha realizada com sucesso!, <span class="info">${nomeCadastrado}</span>!</h1>
+                <p>Caso não tenha sido você altere sua senha imediatamente ou entre em contato conosco!</p>
+                 
+                <p>Aqui estão os seus dados de cadastro:</p>
+                <ul>
+                    <li><strong>Nome:</strong> <span>${nomeCadastrado}</span></li>
+                    <li><strong>Email:</strong> <span>${emailCadastrado}</span></li>
+                    <li><strong>CPF:</strong> <span>${cnpjCadastrado}</span></li>
+                    <li><strong>Nova Senha:</strong> <span></span>${novaSenha}</li>
+                </ul>
+                <p>Guarde essas informações em um local seguro. Caso precise de ajuda, nossa equipe está à disposição!</p>
+                <p>Atenciosamente,<br>Sua equipe de suporte</p>
+        `
+
+        const sender = {
+            address: "empregototal_adm@gmail.com",
+            name: "Emprego Total",
+        };
+        const recipients = [
+            emailCadastrado
+        ];
+        transport
+            .sendMail({
+                from: sender,
+                to: recipients,
+                subject: "Alteração de Senha!",
+                text: "Congrats for sending test email with Mailtrap!",
+                html: html,
+                category: "Integration Test",
+                sandbox: true
+            })
+            .then(console.log, console.error);
     
         return res.status(201).json({});
         
@@ -163,6 +206,14 @@ const alterarSenhaEmpresaDeslogado = async (req, res) => {
     } = req.body
 
     try {
+        setLocale(pt);
+        const schema = yup.object().shape({
+            email: yup.string().email('Formato de e-mail é inválido!').required(),
+            cnpj: yup.string().required().matches(/^\d{14}$/, 'O CNPJ deve conter apenas números').test('cnpj-valido', 'cnpj inválido', value => cnpjUsuario.isValid(value)),
+            senha: yup.string().min(5, 'A senha deve ter pelo menos 5 caracteres').required()
+        });
+
+        await schema.validate(req.body);
         const existeUsuario = `select * from empresas where email = $1 and cnpj = $2`;
     
         const { rows, rowCount } = await conexao.query(existeUsuario, [email, cnpj]);
@@ -170,6 +221,8 @@ const alterarSenhaEmpresaDeslogado = async (req, res) => {
         if(rowCount === 0) {
             return res.status(404).json({mensagem: 'Dados digitados não conferem!'});
         }
+
+        const { nome:nomeCadastrado, email:emailCadastrado, cnpj:cnpjCadastrado } = rows[0];
     
         const { id } = rows[0];
     
@@ -184,6 +237,41 @@ const alterarSenhaEmpresaDeslogado = async (req, res) => {
             return res.status(400).json({mensagem: 'Não foi possível alterar a senha!'});
     
         }
+
+        const html = `
+                <div>
+                <h1>Alteração de Senha realizada com sucesso!, <span class="info">${nomeCadastrado}</span>!</h1>
+                <p>Caso não tenha sido você altere sua senha imediatamente ou entre em contato conosco!</p>
+                 
+                <p>Aqui estão os seus dados de cadastro:</p>
+                <ul>
+                    <li><strong>Nome:</strong> <span>${nomeCadastrado}</span></li>
+                    <li><strong>Email:</strong> <span>${emailCadastrado}</span></li>
+                    <li><strong>CPF:</strong> <span>${cnpjCadastrado}</span></li>
+                    <li><strong>Nova Senha:</strong> <span></span>${novaSenha}</li>
+                </ul>
+                <p>Guarde essas informações em um local seguro. Caso precise de ajuda, nossa equipe está à disposição!</p>
+                <p>Atenciosamente,<br>Sua equipe de suporte</p>
+        `
+
+        const sender = {
+            address: "empregototal_adm@gmail.com",
+            name: "Emprego Total",
+        };
+        const recipients = [
+            emailCadastrado
+        ];
+        transport
+            .sendMail({
+                from: sender,
+                to: recipients,
+                subject: "Alteração de Senha!",
+                text: "Congrats for sending test email with Mailtrap!",
+                html: html,
+                category: "Integration Test",
+                sandbox: true
+            })
+            .then(console.log, console.error);
     
         return res.status(201).json({});
         
